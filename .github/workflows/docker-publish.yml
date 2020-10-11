@@ -55,13 +55,9 @@ jobs:
         env: # Or as an environment variable
           DOCKER_USER: ${{ secrets.dockerUser }}
           DOCKER_PASS: ${{ secrets.dockerPass }}
-        run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-
+        run: echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
 
       - name: Push image to GitHub Container Registry
-        env: # Or as an environment variable
-          DOCKER_USER: ${{ secrets.dockerUser }}
-          DOCKER_PASS: ${{ secrets.dockerPass }}
         run: |
           # Strip git ref prefix from version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')-$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5 | head -n 1)
@@ -74,8 +70,6 @@ jobs:
 
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
-
-          docker login -u $DOCKER_USER -p $DOCKER_PASS
 
           docker tag $IMAGE_NAME $IMAGE_NAME:$VERSION
           docker push $IMAGE_NAME:$VERSION
