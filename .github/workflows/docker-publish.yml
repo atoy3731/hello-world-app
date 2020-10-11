@@ -53,9 +53,9 @@ jobs:
 
       - name: Log into Docker
         env: # Or as an environment variable
-          DOCKER_USER: ${{ secrets.dockerUser }}
-          DOCKER_PASS: ${{ secrets.dockerPass }}
-        run: echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USER --password-stdin
 
       - name: Push image to GitHub Container Registry
         run: |
