@@ -16,7 +16,8 @@ on:
 env:
   # TODO: Change variable to your image's name.
   IMAGE_NAME: alterusio/hello-world
-
+  CHART_REPO_ORG: alterus-io
+  CHART_REPO_NAME: demo-app
 jobs:
   # Run tests.
   # See also https://docs.docker.com/docker-hub/builds/automated-testing/
@@ -36,10 +37,8 @@ jobs:
 
           fi
 
-  # Push image to GitHub Packages.
-  # See also https://docs.docker.com/docker-hub/builds/
+
   push:
-    # Ensure test job passes before pushing image.
     needs: test
 
     runs-on: ubuntu-latest
@@ -80,7 +79,17 @@ jobs:
 
 
       - name: Update image tags
+        env:
+          GIT_USER: ${{ secrets.GIT_USER }}
+          GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
         run: |
           echo "VERSION=$VERSION"
 
-          git --version
+          git clone "https://$GIT_USER:$GIT_PASSWORD@github.com/$CHART_REPO_ORG/$CHART_REPO_NAME.git"
+          git checkout master
+
+          cd "$CHART_REPO_NAME"
+          sed -i -e "s/tag: \".*\"/tag: \"$VERSION\"/g" values.yaml
+          git add values.yaml
+          git commit -m "Update image tag to $VERSION"
+          git push "https://$GIT_USER:$GIT_PASSWORD@github.com/$CHART_REPO_ORG/$CHART_REPO_NAME.git" master
