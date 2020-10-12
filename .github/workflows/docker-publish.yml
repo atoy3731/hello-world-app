@@ -62,16 +62,10 @@ jobs:
           # Strip git ref prefix from version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
 
-          echo "VERSION_TOP=$VERSION"
-
           HASH=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 7 ; echo '')
-
-          echo "$HASH"
 
           # Strip "v" prefix from tag name
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-
-          echo "VERSION_NO_V=$VERSION"
 
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION="$HASH"
@@ -79,24 +73,13 @@ jobs:
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
 
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
           docker tag $IMAGE_NAME $IMAGE_NAME:$VERSION
           docker push $IMAGE_NAME:$VERSION
 
 
-#      - name: Update image tags
-#        run: |
-#          # Strip git ref prefix from version
-#          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')-$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5 | head -n 1)
-#
-#          # Strip "v" prefix from tag name
-#          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-#
-#          # Use Docker `latest` tag convention
-#          [ "$VERSION" == "master" ] && VERSION=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5 | head -n 1)
-#
-#          echo IMAGE_ID=$IMAGE_ID
-#          echo VERSION=$VERSION
-#
-#          docker tag $IMAGE_NAME $IMAGE_NAME:$VERSION
-#          docker push $IMAGE_NAME:$VERSION
+      - name: Update image tags
+        run: |
+          echo "VERSION=$VERSION"
 
