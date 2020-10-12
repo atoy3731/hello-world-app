@@ -64,7 +64,7 @@ jobs:
 
           echo "VERSION_TOP=$VERSION"
 
-          HASH=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5 | head -n 1)
+          HASH=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 7 ; echo '')
 
           echo "$HASH"
 
