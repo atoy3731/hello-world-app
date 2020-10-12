@@ -64,7 +64,9 @@ jobs:
 
           echo "VERSION_TOP=$VERSION"
 
-          cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5 | head -n 1
+          HASH=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5 | head -n 1)
+
+          echo "$HASH"
 
           # Strip "v" prefix from tag name
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
@@ -72,7 +74,7 @@ jobs:
           echo "VERSION_NO_V=$VERSION"
 
           # Use Docker `latest` tag convention
-          [ "$VERSION" == "master" ] && VERSION=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5 | head -n 1)
+          [ "$VERSION" == "master" ] && VERSION="$HASH"
 
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
