@@ -59,25 +59,24 @@ jobs:
 
       - name: Push image to DockerHub
         run: |
-           echo "here I am"
-#          # Strip git ref prefix from version
-#          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-#
-#          echo "VERSION_TOP=$VERSION"
-#
-#          # Strip "v" prefix from tag name
-#          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-#
-#          echo "VERSION_NO_V=$VERSION"
-#
-#          # Use Docker `latest` tag convention
-#          [ "$VERSION" == "master" ] && VERSION=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5 | head -n 1)
-#
-#          echo IMAGE_ID=$IMAGE_ID
-#          echo VERSION=$VERSION
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
 
-#          docker tag $IMAGE_NAME $IMAGE_NAME:$VERSION
-#          docker push $IMAGE_NAME:$VERSION
+          echo "VERSION_TOP=$VERSION"
+
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          echo "VERSION_NO_V=$VERSION"
+
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5 | head -n 1)
+
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+
+          docker tag $IMAGE_NAME $IMAGE_NAME:$VERSION
+          docker push $IMAGE_NAME:$VERSION
 
 
 #      - name: Update image tags
