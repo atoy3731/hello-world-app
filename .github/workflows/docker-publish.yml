@@ -64,6 +64,8 @@ jobs:
 
           echo "VERSION_TOP=$VERSION"
 
+          cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5 | head -n 1
+
           # Strip "v" prefix from tag name
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
 
