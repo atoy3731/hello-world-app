@@ -11,6 +11,11 @@
             <h2>Hello World!</h2>
             <p>My hostname is: <b>{{ local_hostname }}</b></p>
             <p>My IP is: <b>{{ local_ip }}</b></p>
+
+            {% if vault_enabled %}
+            <p></p>
+            <p>Vault is enabled! Check your pod logs for the secret!</p>
+            {% endif %}
         </div>
     </body>
 </html>
