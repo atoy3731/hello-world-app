@@ -17,7 +17,7 @@ env:
   # TODO: Change variable to your image's name.
   IMAGE_NAME: alterusio/hello-world
   CHART_REPO_ORG: alterus-io
-  CHART_REPO_NAME: demo-app
+  CHART_REPO_NAME: hello-world-manifests
 jobs:
   # Run tests.
   # See also https://docs.docker.com/docker-hub/builds/automated-testing/
@@ -93,7 +93,7 @@ jobs:
 
 
           cd "$CHART_REPO_NAME"
-          sed -i -e "s/tag: \".*\"/tag: \"$VERSION\"/g" apps/hello-world/values.yaml
-          git add apps/hello-world/values.yaml
+          sed -i -e "s/tag: \".*\"/tag: \"$VERSION\"/g" values.yaml
+          git add values.yaml
           git commit -m "Update image tag to $VERSION"
           git push "https://$GIT_USER:$GIT_PASSWORD@github.com/$CHART_REPO_ORG/$CHART_REPO_NAME.git" master
