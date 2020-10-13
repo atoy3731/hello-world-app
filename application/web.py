@@ -19,6 +19,7 @@ def index():
 
 if __name__ == '__main__':
     if VAULT_ENABLED:
+        print("\n====================")
         print("Vault is enabled! The secret is: {0}".format(DEMO_SECRET))
-
+        print("====================\n")
     app.run(host=APP_HOST, port=APP_PORT)
