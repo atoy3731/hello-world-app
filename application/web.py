@@ -14,7 +14,7 @@ app = Flask(__name__)
 @app.route('/index')
 def index():
     return render_template('hello_world.html', local_hostname=socket.gethostname(), local_ip=socket.gethostbyname(socket.gethostname()), vault_enabled=VAULT_ENABLED)
-    return render_template('hello_kubernetes.html', local_hostname=socket.gethostname(), local_ip=socket.gethostbyname(socket.gethostname()), vault_enabled=VAULT_ENABLED)
+    # return render_template('hello_kubernetes.html', local_hostname=socket.gethostname(), local_ip=socket.gethostbyname(socket.gethostname()), vault_enabled=VAULT_ENABLED)
 
 
 if __name__ == '__main__':
