@@ -2,11 +2,9 @@ name: Docker
 
 on:
   push:
-    # Publish `master` as Docker `latest` image.
     branches:
       - master
 
-    # Publish `v1.2.3` tags as releases.
     tags:
       - v*
 
@@ -14,13 +12,11 @@ on:
   pull_request:
 
 env:
-  # TODO: Change variable to your image's name.
   IMAGE_NAME: alterusio/hello-world
   CHART_REPO_ORG: alterus-io
   CHART_REPO_NAME: hello-world-manifests
 jobs:
-  # Run tests.
-  # See also https://docs.docker.com/docker-hub/builds/automated-testing/
+  # Test: Either run Docker-based tests or do a simple Docker build to ensure it compiles.
   test:
     runs-on: ubuntu-latest
 
@@ -37,7 +33,6 @@ jobs:
 
           fi
 
-
   push:
     needs: test
 
@@ -47,15 +42,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      # Build: Build the Docker image with a temporary tag.
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
 
+      # Login: Log into Docker Hub using Github secrets.
       - name: Log into Docker
-        env: # Or as an environment variable
+        env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USER --password-stdin
 
+      # Push: Retag the Docker image and push it to Docker Hub.
       - name: Push image to DockerHub
         run: |
           # Strip git ref prefix from version
@@ -77,7 +75,7 @@ jobs:
           docker tag $IMAGE_NAME $IMAGE_NAME:$VERSION
           docker push $IMAGE_NAME:$VERSION
 
-
+      # Update: Update the image tags in the app manifests for CI/CD to Kubernetes via ArgoCD.
       - name: Update image tags
         env:
           GIT_USER: ${{ secrets.GIT_USER }}
@@ -90,7 +88,6 @@ jobs:
 
           git clone "https://$GIT_USER:$GIT_PASSWORD@github.com/$CHART_REPO_ORG/$CHART_REPO_NAME.git"
           git checkout master
-
 
           cd "$CHART_REPO_NAME"
           sed -i -e "s/tag: \".*\"/tag: \"$VERSION\"/g" values.yaml
