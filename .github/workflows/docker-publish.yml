@@ -11,7 +11,7 @@ on:
   pull_request:
 
 env:
-  IMAGE_NAME: alterusio/hello-world
+  IMAGE_NAME: atoy3731/hello-world
   CHART_REPO_ORG: atoy3731
   CHART_REPO_NAME: hello-world-manifests
 jobs:
