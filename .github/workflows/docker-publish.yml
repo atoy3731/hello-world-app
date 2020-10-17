@@ -12,7 +12,7 @@ on:
 
 env:
   IMAGE_NAME: alterusio/hello-world
-  CHART_REPO_ORG: alterus-io
+  CHART_REPO_ORG: atoy3731
   CHART_REPO_NAME: hello-world-manifests
 jobs:
   # Test: Either run Docker-based tests or do a simple Docker build to ensure it compiles.
