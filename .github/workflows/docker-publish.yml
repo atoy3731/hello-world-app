@@ -82,7 +82,7 @@ jobs:
         run: |
           echo "VERSION=$VERSION"
 
-          git config --global user.email "adam@alterus.io"
+          git config --global user.email "adam@atoy.dev"
           git config --global user.name "Adam Toy"
 
           git clone "https://$GIT_USER:$GIT_PASSWORD@github.com/$CHART_REPO_ORG/$CHART_REPO_NAME.git"
