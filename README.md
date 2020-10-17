@@ -1,0 +1,1 @@
+Silly, simple Python-based Hello World application for Kubernetes demo.
